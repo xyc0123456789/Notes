@@ -1,0 +1,4 @@
+conda create -n 旧名字 -clone 原有环境名字		复制环境
+conda env list					查看环境列表
+conda env export > ~/env.yaml 			导出环境
+conda env create -f ~/env.yaml			使用yaml配置文件创建新环境
