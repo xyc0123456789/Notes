@@ -1,0 +1,137 @@
+1、git初始操作
+	git config --global user.name 名字
+	git config --global user.email 邮箱
+	检查已有的配置信息
+		git config --list
+		按q退出
+	1、生成秘钥
+	2、ssh-keygen -t rsa -C "邮箱"
+		执行命令后需要进行3次或4次确认：
+		确认秘钥的保存路径（如果不需要改路径则直接回车）；
+		如果上一步置顶的保存路径下已经有秘钥文件，则需要确认是否覆盖（如果之前的秘钥不再需要则直接回车覆盖，如需要则手动拷贝到其他目录后再覆盖）；
+		创建密码（如果不需要密码则直接回车）；
+		确认密码；
+	3、去github的setting设置ssh
+	4、ssh git@github.com认证一下，输入yes，输入yes，输入yes（重要事情说三遍！被坑过！）结束就完成了
+	
+2、空文件夹与远程建立连接
+	git init
+	git remote add origin 地址（git remote rm origin删除原有联系）
+	git pull
+	git pull origin master
+	git checkout -b 分支 origin/分支：创建分支，并把远程分支放在该分支内
+	
+3、设置分支之间的联系
+	git branch set-upstream=orgin/xxx xxx (origin下是仓库的分支名，另外一个是你的分支名)
+
+4、可以针对分支进行push
+	git push xxx xxx （第一个是远程分支，第二个是本地分支）
+	提示：Everything up-to-date 再提交一下，然后push
+
+5、查看分支情况:
+	git branch -a
+	查看有没有upstream
+	git remote -v
+	切换分支
+	git checkout 分支
+	删除分支
+	git branch -D 分支
+	重命名当前分支（M强制重命名）
+	git branch -M 新的分支名字
+	
+
+6、设置默认编辑器
+	git config core.editor 应用程序路径
+
+7、删除
+	git rm -r --cached  filename
+8、删除所有记录
+	1.切换到新的分支
+	   git checkout --orphan latest_branch
+	2.缓存所有文件（除了.gitignore中声名排除的）
+	   git add -A
+	3.提交跟踪过的文件（Commit the changes）
+	   git commit -am "commit message"
+	4.删除master分支（Delete the branch）
+	   git branch -D master
+	5.重命名当前分支为master（Rename the current branch to master）
+	   git branch -m master
+	6.提交到远程master分支 （Finally, force update your repository）
+	   git push -f origin master
+
+9、服务器代码合并本地代码
+	git stash     //暂存当前正在进行的工作。
+	git pull origin master //拉取服务器的代码
+	git stash pop //合并暂存的代码
+	
+10、服务器代码覆盖本地代码
+	git reset --hard  //回滚到上一个版本
+	git pull origin master
+	
+11、git忽略本地，更新远程修改到本地
+	git checkout branchName
+	git fetch origin branchName
+	git checkout --force
+	或者
+	git fetch --all
+	git reset --hard origin/master
+
+	
+12、文件发生冲突时
+	git pull  --allow-unrelated-histories
+	查看合并的文件，修改后commit，push
+
+13、查看commit日志
+	git log
+
+14、更改上传文件大小设置
+	git config http.postBuffer 524288000
+
+15、查看配置信息
+	git config -l
+	
+16、子分支合并到主分支，提交 以及 提交子分支
+	从子分支切换到主分支
+	git checkout master
+	主分支合并子分支
+	git merge 子分支名
+	推送
+	git push xxx
+
+17、合并仅有的两个commit
+	git reset --soft HEAD^1
+	git commit --amend
+
+18、本地与服务器不一致时，如何处理与合并
+	git checkout -b 分支名 origin/远程分支名（新建一个分支来保存远程的子分支）
+	git fetch
+	git checkout main(切换为原来主分支)
+	git merge 子分支（如果fatal: refusing to merge unrelated histories，那么加上--allow-unrelated-histories）
+	
+19、删除远程分支
+	git push origin --delete 远程分支名
+
+20、删除本地追踪远程仓库但远程仓库已经不存在的分支
+	git fetch -p（ 或者--prune）
+	git remote prune origin
+
+21、合并commit
+	git log(commit从上往下按时间递减，越上，日期离现在越近)
+	git rebase -i hashcode(git log显示的hash码，表示需要合并的commit在这条之后)
+	回车会开启页面，调整位置（这也会影响git log的顺序），
+	将需要合并的放一起，被合并将pick改为squash即可，
+	此时会再次弹出commit的修改，更改即可
+	另外当有多个合并命令，当中发生冲突，
+	1、先解决冲突
+	2、add该文件
+	3、git rebase --continue（其中可以用这条语句查看那个文件需要解决冲突）
+	
+22、修改最后一次的commit
+	git commit --amend修改最近一次的提交
+
+23、修改特定的一次commit
+	git log
+	git rebase -i 需要改的前一条的hash
+	将想改commit的pick修改为edit，退出来
+	git commit --amend（修改commit）
+	git rebase --continue

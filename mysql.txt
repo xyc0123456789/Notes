@@ -1,0 +1,97 @@
+use testdata;
+create table onemindata(
+     SymbolType char(5),
+     Date integer(8),
+     Time integer(6),
+     High double(10,3),
+     Low double(10,3),
+     Open double(10,3),
+     Close double(10,3),
+     Vol integer(8),
+     OpenInt integer(8),
+     TrueDate integer(8));
+
+create table fiveMinData(
+     SymbolType char(5),
+     Date integer(8),
+     Time integer(6),
+	 High double(10,3),
+     Low double(10,3),
+     Open double(10,3),
+     Close double(10,3),
+     Vol integer(8),
+     OpenInt integer(8),
+     TrueDate integer(8));
+
+create table fifteenMinData(
+     SymbolType char(5),
+     Date integer(8),
+     Time integer(6),
+     High double(10,3),
+     Low double(10,3),
+     Open double(10,3),
+     Close double(10,3),
+     Vol integer(8),
+     OpenInt integer(8),
+     TrueDate integer(8));
+     
+create table dayData(
+     SymbolType char(5),
+     Date integer(8),
+     Time integer(6),
+     High double(10,3),
+     Low double(10,3),
+     Open double(10,3),
+     Close double(10,3),
+     Vol integer(8),
+     OpenInt integer(8),
+     TrueDate integer(8));
+	 
+	 
+use mysql;
+create user python@'localhost' identified by "";
+show grants for python@'localhost';
+select user,host from user;
+set password for guest@'%' ='';
+
+
+use testdata;
+show tables;
+alter table dayData modify column high double(10,3);
+alter table dayData modify column low double(10,3);
+alter table dayData modify column close double(10,3);
+alter table dayData modify column open double(10,3);
+describe dayData;
+select count(*) from onemindata;
+
+
+
+update on 20190620：
+	show variables like "%_buffer%";
+	SET GLOBAL innodb_buffer_pool_size=67108864;
+	
+	alter table onemindata add ID char(20);
+	update onemindata set ID = concat(date,time) where symboltype = "pm";
+	
+	sqlalchemy增删改查：
+	建表：表名.metadata.create_all(engine)
+	若要插入数据：    
+		2.4 创建会话并提交：
+		2.4.1 创建会话对象：DBSession= sessionmaker(bind=engine)
+		2.4.2 实例化会话对象：session= DBSession()
+		2.4.3 实例化表格对象：new_share= test1(id='01',name='hhhh',info='哈哈哈')
+		2.4.4 将实例化的表格参数添加到会话等待提交：session.add(new_share)
+		2.4.5 提交会话：session.commit()
+		2.4.6 关闭会话：session.close()
+	若要查询数据：
+		2.4 创建会话：
+		2.4.1 创建会话对象：DBSession= sessionmaker(bind=engine)
+		2.4.2 实例化会话对象：session= DBSession()
+		2.4.3 构建查询语句：test= session.query(test1).filter(test1.id=='01').one()
+		2.5 查询结果是一个表格对象，需要看对应列的值：print(test.name)
+	# 在建立的会话基础上执行sql语句
+		session.execute('insert into users values(2,"Bob","budian")')
+		session.commit()
+	
+
+

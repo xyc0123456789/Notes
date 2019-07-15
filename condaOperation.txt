@@ -1,0 +1,13 @@
+conda create -n 新名字 --clone 原有环境名字		复制环境
+conda create -n 新名字 python=3.6
+conda env list					查看环境列表
+conda env export > ~/env.yaml 			导出环境
+conda env create -f ~/env.yaml			使用yaml配置文件创建新环境
+conda remove -n 名字 --all 				删除
+conda activate 名字						激活
+
+离线安装（先到该目录文件夹）：
+pytorch-1.8.0-py3.8_cuda10.1_cudnn7_0.tar.bz2
+cudatoolkit-10.1.243-h74a9793_0.conda
+conda install --use-local 包名
+conda install -c local 包名

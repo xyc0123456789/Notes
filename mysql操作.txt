@@ -1,0 +1,145 @@
+移除服务：
+	命令指示符进入bin文件夹，输入.mysqld -remove mysql80（mysql80为服务名，貌似大小写不敏感）
+服务启动与服务关闭：
+	net start mysql
+	net stop mysql
+安装服务：
+	bin文件夹下输入.\mysqld -install mysql3356
+登录：
+	mysql -h 192.168.0.119 -u root -p 
+权限操作：
+	切换到mysql数据库
+	use mysql;
+	查看所有的用户
+	select user from user;
+	创建一个用户
+	create user php identified by “password”;
+	mysql用户重命名
+	rename user php to php_test;
+	修改用户的host
+	use mysql;    update user set host='%' where user='root' limit 1;    flush privileges;
+	修改密码
+	ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '密码';
+	set password for 用户名@'%' = '新密码'; 
+	mysql删除一个用户
+	drop user php_test;
+	收回某种权限的写法是： 
+	REVOKE select 
+	ON . 
+	FROM ‘u1'@'localhost';
+	实例：
+		create user guest identified by "";
+		grant select,create,insert,update,delete on *.* to python@"localhost";
+		grant select on *.* to guest@"%";
+		show grants for python@'%';
+		show grants for guest@'%';
+		select user,host from user;
+
+show variables like '%timeout%';
+
+数据库操作：
+	建库：create database testjdbc；
+	卸载库：drop testjdbc；
+	显示所有库：show databases；
+	选择库：use testjdbc；
+表操作：
+	增加字段：
+		alter table 表名 add 字段名 类型，add ...；
+	更新字段：
+		update 表名 set 字段=.... where ....；
+	字符串合并：
+		concat(string1,string2)；
+	类型转换：
+		cast( int as char)
+		
+	修改字段：
+		alter table 表名 modify column 字段名 类型;
+		alter table <表名> change <字段名> <字段新名称> <字段的类型>;
+	
+	创建表：
+		create table 表名(
+			参数1  参数类型，
+			参数2  参数类型，
+			...
+			primary key(参数1)，
+			foreign key(参数1)
+		);
+			其中参数类型例如：char(5)五个字符组成，varchar(50)字符个数最多50个的变长字符串，integer整数，参数1是主键，foreign外键，外键就是与其他表的共同属性（例如表一和表二同时引用了参数1）
+	删除表：drop table 表名;
+	显示库中所有表：show tables；
+	显示某一个表的内容：describe testjdbc；
+	插入：insert into 表名 (变量名，...) values （变量）;
+	查询：select * from table_name where xxx and xxx;
+		select 参数1 as "更改后的参数名1" ，参数2 as "更改后的参数名2" from 表名 where 判断语句；
+		
+		select distinct 参数名 as "参数名1.1" from 表名 表名的别名；
+				互不相同的 参数名 的 参数名 显示为 参数名1.1 记录， 可用表名的别名 代替 表名  多用于多表操作
+		
+		select * from table_name where xxx and xxx order by 参数名;
+				默认为升序，降序需要在参数名后追加desc		指定多列时，对第一列排序，第一列相同在对第二列排序，
+			
+	更新（改）：update 表名 set 参数1=值1，参数2=值2... where 判断语句；
+	删除（删）：delete from 表名 where 判断语句；
+		（delete from 表名；删除表中所有记录）
+
+判断语句：
+	like：字符串 like ‘_sd%’ 字符串会匹配 asdfgfhhf 
+			_匹配单个字符，%匹配零个或者多个字符
+	v between v1 and v2    检查v是否在v1和v2之间
+	v is null     v is not null 判断v是否为空
+
+	
+当前选择的数据库：select database();
+查询mysql版本：select version();
+当前时间：select now();或select current_timestamp();
+打印年月日：SELECT DAY/MONTH/YEAR(CURRENT_DATE);
+打印字符：SELECT "I'am danny.yao";
+查看表结构：describe <表名>;
+当前所有连接的详细情况：show full processlist;(没有full，只显示前100个连接)
+看表注释，字段注释;
+	show create table table_name;
+	show full columns from table_name;
+	show table status;
+
+表别名
+	select 
+
+
+多表查询：
+	获得两表所有结果的笛卡尔积，即table1 2*2 table2 3*2 ，得到6*4
+	select * from table1,table2;	
+	select * from table1 cross join table2;         同上结果
+	select * from t1 cross join t2 cross join t3;   更多表格
+	
+	
+	内连接
+		关键在于 on 后面的限制条件，无此条件，与上面结果相同
+		select * from table1 t1 inner join table2 t2 on t1.t1id==t2.t2id;
+		select * from table1 t1,t2 where t1.t1id==t2.t2id     同上结果
+	
+	左外连接left outer join 也可写为 left join
+		行数按 t1 表格 t1id 数 为标准
+		select * from t1 left outer join t2 on t1.t1id==t2.t2id; 
+	右外链接right outer join 也可写为 right join
+		行数按 t2 表格 t2id 数 为标准
+		select * from t1 right outer join t2 on t1.t1id==t2.t2id;
+	
+	联合查询 union 
+		注意：
+			两次查询出的结果字段数必须相同
+			相同结果会被合并	union all可以显示所有字段
+		将两个表行相加比如t1行数2，t2行数3，最后会显示5行，
+		以最左边语句的字段作为显示字段
+		select * from t1 union select * from t2;
+	
+	全连接 full join
+		mysql不支持full join
+		但通过下面方式可以实现
+		select * from t1 left join t2 on t1id=t2id
+		union
+		select * from t1 right join t2 on t1id=t2id;
+	全连接取不重复部分，即不是交集的结果
+		select * from t1 left join t2 on t1id=t2id where t2id is null
+		union
+		select * from t1 right join t2 on t1id=t2id where t1id is null;
+		
