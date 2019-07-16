@@ -56,3 +56,11 @@
 	   git branch -m master
 	6.提交到远程master分支 （Finally, force update your repository）
 	   git push -f origin master
+	
+9、git忽略本地，更新远程修改到本地
+	git checkout branchName
+	git fetch origin branchName
+	git checkout --force
+	或者
+	git fetch --all
+	git reset --hard origin/master
