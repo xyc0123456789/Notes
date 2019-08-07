@@ -64,3 +64,11 @@
 	或者
 	git fetch --all
 	git reset --hard origin/master
+	
+10、文件发生冲突时
+	git pull  --allow-unrelated-histories
+	查看合并的文件，修改后commit，push
+
+11、查看commit日志
+	git log
+	
