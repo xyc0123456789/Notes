@@ -82,4 +82,8 @@
 11、查看commit日志
 	git log
 
+12、更改上传文件大小设置
+	git config http.postBuffer 524288000
 
+13、查看配置信息
+	git config -l
