@@ -74,11 +74,21 @@
 	git fetch --all
 	git reset --hard origin/master
 
-12、忽略冲突，直接合并
-	git pull --allow-unrelated-histories
-	之后commit，push
+	
+12、文件发生冲突时
+	git pull  --allow-unrelated-histories
+	查看合并的文件，修改后commit，push
 
-13、子分支合并到主分支，提交 以及 提交子分支
+13、查看commit日志
+	git log
+
+14、更改上传文件大小设置
+	git config http.postBuffer 524288000
+
+15、查看配置信息
+	git config -l
+	
+16、子分支合并到主分支，提交 以及 提交子分支
 	从子分支切换到主分支
 	git checkout master
 	主分支合并子分支
@@ -90,5 +100,4 @@
 	git checkout login(子分支name)
 	推送
 	git push -u origin login(子分支name)
-	
 
