@@ -29,8 +29,8 @@
 	FROM ‘u1'@'localhost';
 	实例：
 		create user guest identified by "";
-		grant select,create,insert,update,delete on *.* to python;
-		grant select on *.* to guest;
+		grant select,create,insert,update,delete on *.* to python@"localhost";
+		grant select on *.* to guest@"%";
 		show grants for python@'%';
 		show grants for guest@'%';
 		select user,host from user;

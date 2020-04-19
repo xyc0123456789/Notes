@@ -78,3 +78,17 @@
 	git pull --allow-unrelated-histories
 	之后commit，push
 
+13、子分支合并到主分支，提交 以及 提交子分支
+	从子分支切换到主分支
+	git checkout master
+	主分支合并子分支
+	git merge login(子分支name)
+	推送
+	gitpush
+	
+	推送子分支
+	git checkout login(子分支name)
+	推送
+	git push -u origin login(子分支name)
+	
+
