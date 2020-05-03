@@ -71,8 +71,12 @@ show variables like '%timeout%';
 	插入：insert into 表名 (变量名，...) values （变量）;
 	查询：select * from table_name where xxx and xxx;
 		select 参数1 as "更改后的参数名1" ，参数2 as "更改后的参数名2" from 表名 where 判断语句；
-		select distinct 参数名 as "参数名1.1" from 表名；互不相同的 参数名 的 参数名 显示为 参数名1.1 记录
-		select * from table_name where xxx and xxx order by 参数名;默认为升序，降序需要在参数名后追加desc		指定多列时，对第一列排序，第一列相同在对第二列排序，
+		
+		select distinct 参数名 as "参数名1.1" from 表名 表名的别名；
+				互不相同的 参数名 的 参数名 显示为 参数名1.1 记录， 可用表名的别名 代替 表名  多用于多表操作
+		
+		select * from table_name where xxx and xxx order by 参数名;
+				默认为升序，降序需要在参数名后追加desc		指定多列时，对第一列排序，第一列相同在对第二列排序，
 			
 	更新（改）：update 表名 set 参数1=值1，参数2=值2... where 判断语句；
 	删除（删）：delete from 表名 where 判断语句；
@@ -96,3 +100,46 @@ show variables like '%timeout%';
 	show create table table_name;
 	show full columns from table_name;
 	show table status;
+
+表别名
+	select 
+
+
+多表查询：
+	获得两表所有结果的笛卡尔积，即table1 2*2 table2 3*2 ，得到6*4
+	select * from table1,table2;	
+	select * from table1 cross join table2;         同上结果
+	select * from t1 cross join t2 cross join t3;   更多表格
+	
+	
+	内连接
+		关键在于 on 后面的限制条件，无此条件，与上面结果相同
+		select * from table1 t1 inner join table2 t2 on t1.t1id==t2.t2id;
+		select * from table1 t1,t2 where t1.t1id==t2.t2id     同上结果
+	
+	左外连接left outer join 也可写为 left join
+		行数按 t1 表格 t1id 数 为标准
+		select * from t1 left outer join t2 on t1.t1id==t2.t2id; 
+	右外链接right outer join 也可写为 right join
+		行数按 t2 表格 t2id 数 为标准
+		select * from t1 right outer join t2 on t1.t1id==t2.t2id;
+	
+	联合查询 union 
+		注意：
+			两次查询出的结果字段数必须相同
+			相同结果会被合并	union all可以显示所有字段
+		将两个表行相加比如t1行数2，t2行数3，最后会显示5行，
+		以最左边语句的字段作为显示字段
+		select * from t1 union select * from t2;
+	
+	全连接 full join
+		mysql不支持full join
+		但通过下面方式可以实现
+		select * from t1 left join t2 on t1id=t2id
+		union
+		select * from t1 right join t2 on t1id=t2id;
+	全连接取不重复部分，即不是交集的结果
+		select * from t1 left join t2 on t1id=t2id where t2id is null
+		union
+		select * from t1 right join t2 on t1id=t2id where t1id is null;
+		
